@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Word changer",
+  "version": "1.0",
+  "description": "A Chrome plug-in for websites",
+  "permissions": ["activeTab"],
+  "action": {
+    "default_icon": "assets/bookmark.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["contentScript.js"]
+    }
+  ]
+}
