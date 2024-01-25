@@ -1,11 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "Word changer",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "name": "Word Changer",
   "version": "1.0",
-  "description": "A Chrome plug-in for websites",
-  "permissions": ["activeTab"],
+  "description": "Word Changer",
+  "permissions": ["activeTab", "storage"],
   "action": {
-    "default_icon": "assets/bookmark.png",
+    "default_icon": {
+      "16": "assets/edit.png",
+      "48": "assets/edit.png",
+      "128": "assets/edit.png"
+    },
     "default_popup": "popup.html"
   },
   "content_scripts": [

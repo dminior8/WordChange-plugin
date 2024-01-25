@@ -1,48 +1,41 @@
-chrome.runtime.onConnect.addListener(function(port) {
-    port.onMessage.addListener(function(msg) {
-      if (msg.action === "changeLetter") {
-      const letterToReplace = request.letter;
-      const newLetter = request.newLetter;
-  
-      // Pobierz wszystkie tekstowe węzły na stronie
-      const textNodes = getTextNodes(document.body);
-  
-      // Iteruj przez tekstowe węzły i zamień litery w słowach
-      textNodes.forEach(node => {
-        let originalText = '';
-        if (node) {
-        originalText = node.nodeValue;
-        }
-        const modifiedText = changeLetterInWord(originalText, letterToReplace, newLetter);
-  
-        // Zamień tekst w węźle na zmodyfikowany tekst
-        if (originalText !== modifiedText) {
-          node.nodeValue = modifiedText;
-               
-      }});
-  }});
+//contentScript.js
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+  console.log("Message received");
+    if (request.action === "changeLetter") {
+    //const wordToChange = request.word;
+    const letterToReplace = request.letter;
+    const newLetter = request.newLetter;
+
+    const modifiedWord = changeLetterInWord(wordToChange, letterToReplace, newLetter);
+
+    replaceTextInBody(document.body, wordToChange, modifiedWord);
+  }else{
+    console.log("Unknown action");
+  }
 });
-  
-  function getTextNodes(element) {
-    // Funkcja pomocnicza do pobierania tekstowych węzłów z elementu i jego dzieci
-    const textNodes = [];
-    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
-  
-    let node;
-    while (node = walker.nextNode()) {
-      textNodes.push(node);
+
+function replaceTextInBody(element, searchTerm, replacement) {
+  // Rekurencyjna funkcja do zamiany tekstu w elementach podrzędnych
+  for (let i = 0; i < element.childNodes.length; i++) {
+    const node = element.childNodes[i];
+
+    if (node.nodeType === Node.TEXT_NODE) {
+      // Jeśli to jest tekstowy węzeł, zamień odpowiednie wystąpienia tekstu
+      const replacedText = node.textContent.replace(new RegExp(searchTerm, "gi"), replacement);
+      node.textContent = replacedText;
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      // Jeśli to jest element, wywołaj rekurencyjnie dla jego dzieci
+      replaceTextInBody(node, searchTerm, replacement);
     }
-  
-    return textNodes;
   }
-  
-  function changeLetterInWord(word, letterToReplace, newLetter) {
-    const wordArray = word.split('');
-    for (let i = 0; i < wordArray.length; i++) {
-      if (wordArray[i] === letterToReplace) {
-        wordArray[i] = newLetter;
-      }
+}
+
+function changeLetterInWord(word, letterToReplace, newLetter) {
+  const wordArray = word.split('');
+  for (let i = 0; i < wordArray.length; i++) {
+    if (wordArray[i] === letterToReplace) {
+      wordArray[i] = newLetter;
     }
-    return wordArray.join('');
   }
-  
+  return wordArray.join('');
+}

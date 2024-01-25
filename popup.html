@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Zmieniacz Słów</title>
-  <style>
-    body { width: 200px; }
-  </style>
-  <!--<link href="popup.css" rel="stylesheet" type="text/css" />-->
+  <link href="popup.css" rel="stylesheet" type="text/css" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'nonce-RANDOM_NONCE'">
 </head>
 <body>
   <h2>Word changer</h2>
-  <label for="letterToReplace">Litera do zamiany</label>
-  <input type="text" id="letterToReplace" />
-  <label for="newLetter">Nowa litera</label>
-  <input type="text" id="newLetter" />
+  <!--<label for="letterToReplace">Litera do zamiany</label>-->
+  <input type="text" id="letterToReplace" value="r"/>
+  <!--<label for="newLetter">Nowa litera</label>-->
+  <input type="text" id="newLetter" value="X"/>
   <button id="myButton">Zmień</button>
-  <script type="module" src="popup.js"></script>
+  <script nonce="abcdefg12345" type="module" src="popup.js"></script>
 </body>
 </html>
